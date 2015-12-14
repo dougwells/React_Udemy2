@@ -30,6 +30,7 @@ module.exports = React.createClass({
   //send data to firebase
   //.push -> how you create a new object in Firebase
   //different than an array's push but inspired by ...
+  //header.jsx got access to itemsStore via app.jsx's <Header itemsStore = {firebaseRefs.items}
   this.props.itemsStore.push({
     text: this.state.text,
     done: false   //done represents whether todo is done/completed
