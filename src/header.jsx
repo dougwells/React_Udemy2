@@ -28,6 +28,14 @@ module.exports = React.createClass({
 
     handleClick: function(){
   //send data to firebase
+  //.push -> how you create a new object in Firebase
+  //different than an array's push but inspired by ...
+  this.props.itemsStore.push({
+    text: this.state.text,
+    done: false   //done represents whether todo is done/completed
+  });
+  this.setState({text:''});
+
   console.log(this.state.text);
 
     },

@@ -1,6 +1,6 @@
 var React = require('react');
-var ReactFire = require('reactfire');
-var FireBase = require('firebase');
+var ReactFire = require('reactfire'); //React <-> FireBase Data
+var Firebase = require('firebase'); //Communicate w/online data & get it to browser
 var Header = require('./header');
 var rootURL = 'radiant-torch-5758.firebaseIO.com/';
 
@@ -16,7 +16,12 @@ var App = React.createClass({
 //bindAsObject -> ReactFire method binds data from URL to
 //this.state.items = {data @ URL}.  RERUNS when data changes.
   componentWillMount: function(){
-    this.bindAsObject(new FireBase(rootURL+'items/'),'items');
+    this.bindAsObject(new Firebase(rootURL+'items/'),'items');
+
+    //Could have written above line of code as ...
+      // this.firebase = new Firebase(rootURL+'items/');
+      // this.bindAsObject(this.firebase, 'items');
+      // -> data is available on this.firebaseRefs.items
   },
   render: function() {
     return <div className='row panel panel-default'>
@@ -24,7 +29,7 @@ var App = React.createClass({
         <h2 className='text-center'>
           To-Do List
         </h2>
-        <Header />
+        <Header itemsStore ={this.firebaseRefs.items}/>
       </div>
     </div>
 
