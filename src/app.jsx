@@ -1,7 +1,8 @@
 var React = require('react');
-var ReactFire = require('reactfire'); //React <-> FireBase Data
-var Firebase = require('firebase'); //Communicate w/online data & get it to browser
+var ReactFire = require('reactfire'); //React <-> Firebase Data
+var Firebase = require('firebase'); //Communicate w/online database & get it to browser
 var Header = require('./header');
+var List = require('./list');
 var rootURL = 'radiant-torch-5758.firebaseIO.com/';
 
 
@@ -11,6 +12,11 @@ var App = React.createClass({
 //React method that makes it easy to give components common set
 //of methods.
   mixins: [ ReactFire ],
+  getInitialState: function(){
+    return {
+      item: {}
+    }
+  },
 
 //componentWillMount --> React method. Run this after render ..
 //bindAsObject -> ReactFire method binds data from URL to
@@ -30,6 +36,7 @@ var App = React.createClass({
           To-Do List
         </h2>
         <Header itemsStore ={this.firebaseRefs.items}/>
+        <List items ={this.state.items}/>
       </div>
     </div>
 

@@ -35,9 +35,6 @@ module.exports = React.createClass({
     done: false   //done represents whether todo is done/completed
   });
   this.setState({text:''});
-
-  console.log(this.state.text);
-
     },
 
     handleInputChange: function(event){
