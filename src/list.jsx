@@ -15,13 +15,12 @@ module.exports = React.createClass({
       return <h2>Add a todo to get started</h2>
     }else{
       var children =[];
-      for(var key in this.props.items){
-        var item = this.props.items[key];
-        item.key = key;
+      for(var x in this.props.items){ //special case.  x -> unique id/"key"
+        var item = this.props.items[x];
+        item.id = x;
         children.push(
           <ListItem
             item = {item}
-            key = {item.key}
             />
         )
       }
