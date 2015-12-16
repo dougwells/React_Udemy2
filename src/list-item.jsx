@@ -8,7 +8,8 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       text: this.props.item.text,
-      done: this.props.item.done
+      done: this.props.item.done,
+      id: this.props.item.id
   }
 },
   componentWillMount: function(){
@@ -29,7 +30,10 @@ module.exports = React.createClass({
         value = {this.state.text}
         />
       <span className="input-group-btn">
-        <button className="btn btn-danger">
+        <button
+          className="btn btn-danger"
+          onClick={this.handleDeleteClick}
+          >
           Delete
         </button>
       </span>
@@ -39,5 +43,8 @@ module.exports = React.createClass({
     var updateDone = {done: event.target.checked};
     this.setState(updateDone);
     this.fb.update(updateDone);
+  },
+  handleDeleteClick: function(event){
+    this.fb.remove();
   }
 });
