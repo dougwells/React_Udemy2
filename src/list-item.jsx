@@ -9,7 +9,7 @@ module.exports = React.createClass({
     return {
       text: this.props.item.text,
       done: this.props.item.done,
-      id: this.props.item.id
+      textChanged: false
   }
 },
   componentWillMount: function(){
@@ -28,8 +28,10 @@ module.exports = React.createClass({
       <input type='text'
         className='form-control'
         value = {this.state.text}
+        onChange = {this.handleTextChange}
         />
       <span className="input-group-btn">
+        {this.changesButton()}
         <button
           className="btn btn-danger"
           onClick={this.handleDeleteClick}
@@ -39,12 +41,34 @@ module.exports = React.createClass({
       </span>
     </div>
   },
+
+changesButton: function(){
+  if(this.state.textChanged){
+  return <span>
+    <button className="btn btn-primary">Save</button>
+    <button className="btn btn-success">Undo</button>
+  </span>
+} else {
+  return null;
+}
+},
+
   handleDoneChange: function(event){
     var updateDone = {done: event.target.checked};
     this.setState(updateDone);
     this.fb.update(updateDone);
   },
-  handleDeleteClick: function(event){
-    this.fb.remove();
+  handleDeleteClick: function(){
+    console.log(this.props.item);
+    this.fb.remove({text: this.props.item.text});
+    // ;
+  },
+  handleTextChange: function(event){
+    var updatedText = event.target.value;
+    this.setState({
+      text: updatedText,
+      textChanged: true
+    });
+    this.fb.update({text: updatedText});
   }
 });
