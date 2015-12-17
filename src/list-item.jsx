@@ -13,7 +13,8 @@ module.exports = React.createClass({
   }
 },
   componentWillMount: function(){
-    this.fb = new Firebase(rootURL+'items/'+this.props.item.id);
+    this.address = rootURL+'items/'+this.props.item.id;
+    this.fb = new Firebase(this.address);
   },
 
   render: function(){
@@ -22,7 +23,7 @@ module.exports = React.createClass({
         <input
           type='checkbox'
           checked = {this.state.done}
-          onChange = {this.handleDoneChange}
+          onChange = {this.handleDoneCheckChange}
            />
       </span>
       <input type='text'
@@ -42,26 +43,43 @@ module.exports = React.createClass({
     </div>
   },
 
+
 changesButton: function(){
   if(this.state.textChanged){
-  return <span>
-    <button className="btn btn-primary">Save</button>
-    <button className="btn btn-success">Undo</button>
-  </span>
+  return [
+    <button
+      className="btn btn-primary"
+      onClick = {this.handleSaveChange}
+      >Save</button>,
+    <button
+      className="btn btn-success"
+      onClick = {this.handleUndoClick}
+      >Undo</button>
+  ]
 } else {
   return null;
 }
 },
 
-  handleDoneChange: function(event){
+handleUndoClick: function(){
+  console.log(this.props.item.text);
+  this.setState({
+    text: this.props.item.text,
+    textChanged:false
+  });
+},
+
+handleSaveChange: function(){
+  this.fb.update(updateDone);
+},
+
+handleDoneCheckChange: function(event){
     var updateDone = {done: event.target.checked};
     this.setState(updateDone);
-    this.fb.update(updateDone);
   },
   handleDeleteClick: function(){
-    console.log(this.props.item);
-    this.fb.remove({text: this.props.item.text});
-    // ;
+    console.log(this.address);
+    this.fb.remove();
   },
   handleTextChange: function(event){
     var updatedText = event.target.value;
