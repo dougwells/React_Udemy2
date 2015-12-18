@@ -5,6 +5,7 @@ var rootURL = 'radiant-torch-5758.firebaseIO.com/';
 
 module.exports = React.createClass({
 
+//Need to set this.state.xx
   getInitialState: function(){
     return {
       text: this.props.item.text,
@@ -13,6 +14,9 @@ module.exports = React.createClass({
       textChanged: false,
   }
 },
+
+//Need to better understand componentWillMount
+//new Firebase() gives you object w/access to Firebase DB
   componentWillMount: function(){
     this.address = rootURL+'items/'+this.props.item.id;
     this.fb = new Firebase(this.address);
@@ -45,6 +49,7 @@ module.exports = React.createClass({
     </div>
   },
 
+//must use this.setState to change value of this.state
 handleTextChange: function(event){
     var updatedText = event.target.value;
     this.setState({
