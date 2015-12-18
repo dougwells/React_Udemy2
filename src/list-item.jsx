@@ -9,7 +9,8 @@ module.exports = React.createClass({
     return {
       text: this.props.item.text,
       done: this.props.item.done,
-      textChanged: false
+      id: this.props.id,
+      textChanged: false,
   }
 },
   componentWillMount: function(){
@@ -27,8 +28,9 @@ module.exports = React.createClass({
            />
       </span>
       <input type='text'
-        className='form-control'
+        className='form-control {crossedOutClass}'
         value = {this.state.text}
+        disabled = {this.state.done}
         onChange = {this.handleTextChange}
         />
       <span className="input-group-btn">
@@ -41,6 +43,14 @@ module.exports = React.createClass({
         </button>
       </span>
     </div>
+  },
+
+handleTextChange: function(event){
+    var updatedText = event.target.value;
+    this.setState({
+      text: updatedText,
+      textChanged: true
+    });
   },
 
 
@@ -62,7 +72,6 @@ changesButton: function(){
 },
 
 handleUndoClick: function(){
-  console.log(this.props.item.text);
   this.setState({
     text: this.props.item.text,
     textChanged:false
@@ -70,23 +79,17 @@ handleUndoClick: function(){
 },
 
 handleSaveChange: function(){
-  this.fb.update(updateDone);
+    this.fb.update({text: this.state.text});
+    this.setState({textChanged: false});
 },
 
 handleDoneCheckChange: function(event){
     var updateDone = {done: event.target.checked};
     this.setState(updateDone);
+    this.fb.update(updateDone);
+
   },
   handleDeleteClick: function(){
-    console.log(this.address);
     this.fb.remove();
-  },
-  handleTextChange: function(event){
-    var updatedText = event.target.value;
-    this.setState({
-      text: updatedText,
-      textChanged: true
-    });
-    this.fb.update({text: updatedText});
   }
 });

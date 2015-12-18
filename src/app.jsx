@@ -23,9 +23,9 @@ var App = React.createClass({
 //bindAsObject -> ReactFire method binds data from URL to
 //this.state.items = {data @ URL}.  RERUNS when data changes.
   componentWillMount: function(){
-    var fb = new Firebase(rootURL+'items/');
-    this.bindAsObject(fb,'items');
-    fb.on('value', this.HandleDataLoaded);
+    this.fb = new Firebase(rootURL+'items/');
+    this.bindAsObject(this.fb,'items');
+    this.fb.on('value', this.HandleDataLoaded);
 
     //Could have written above line of code as ...
       // this.firebase = new Firebase(rootURL+'items/');
@@ -44,6 +44,7 @@ var App = React.createClass({
             <hr />
             <div className = {"content "+(this.state.loaded ? 'loaded' :'')}>
               <List items ={this.state.items}/>
+              {this.deleteButton()}
             </div>
           </div>
         </div>
@@ -52,6 +53,31 @@ var App = React.createClass({
   },
   HandleDataLoaded: function(){
     this.setState({loaded: true});
+  },
+  deleteButton: function(){
+    if(!this.state.loaded){
+      return
+    }else{
+      return <div className="text-center clear-complete">
+        <hr />
+          <button
+            type="button"
+            onClick = {this.onDeleteDoneClick}
+            className="btn btn-danger"
+            >
+            Clear completed items
+          </button>
+      </div>
+    }
+  },
+// x = unique identifier.  IE, id or key.  Just using x for illustration
+onDeleteDoneClick: function(){
+    for(var x in this.state.items){
+      // console.log(this.state.items[x].done);
+      if(this.state.items[x].done ===true){
+        this.fb.child(x).remove();
+      }
+    }
   }
 
 });

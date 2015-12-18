@@ -11,8 +11,8 @@ module.exports = React.createClass({
   },
 
   renderList:function(){
-    if(this.props.items && Object.keys(this.props.items).length===0){
-      return <h2>Add a todo to get started</h2>
+    if(!this.props.items){
+      return <h4>Add a todo to get started</h4>
     }else{
       var children =[];
       for(var x in this.props.items){ //special case.  x -> unique id/"key"
